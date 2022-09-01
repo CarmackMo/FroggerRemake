@@ -10,11 +10,17 @@ public class FrogController : MonoBehaviour
     GameObject platform=null;
     Vector3 offset;
     GameObject[] gameOverObjects;
+    GameObject[] endPointObjects;
+    GameObject[] winningObjects;
+    public int endPointsAchievedNum=0;
 
     void Start()
     {
-        gameOverObjects = gameOverObjects = GameObject.FindGameObjectsWithTag("GameOver");
+        gameOverObjects = GameObject.FindGameObjectsWithTag("GameOver");
         hideGameOver();
+        endPointObjects = GameObject.FindGameObjectsWithTag("Ends");
+        winningObjects = GameObject.FindGameObjectsWithTag("Winning");
+        hideWinning();
     }
 
     // Update is called once per frame
@@ -54,14 +60,14 @@ public class FrogController : MonoBehaviour
     // hit & entering partforms decection
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Platform" && platform==null)
+        GameObject other = collision.gameObject;
+        if (other.tag.Equals("Platform") && platform==null)
         {
-            platform = collision.gameObject;
+            platform = other;
             offset = transform.position-platform.transform.position;
         }
-            
-        else if (platform==null && (collision.gameObject.tag == "Obstacle" || 
-            collision.gameObject.tag == "Water"))
+        else if (platform==null && (other.tag.Equals("Obstacle") ||
+            other.tag.Equals("Water")))
         {
             // death or hit
             showGameOver();
@@ -69,12 +75,13 @@ public class FrogController : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject==platform)
+        GameObject other = collision.gameObject;
+        if (other == platform)
         {
             platform = null;
             offset = new Vector3(0, 0, 0);
-            if (linearMove)
-                transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
+            if (!linearMove)   // round the axis to int
+                transform.position = new Vector3(Mathf.Round(transform.position.x+0.5f)-0.5f, Mathf.Round(transform.position.y + 0.5f) - 0.5f, Mathf.Round(transform.position.z + 0.5f) - 0.5f);
         }
     }
 
@@ -90,6 +97,35 @@ public class FrogController : MonoBehaviour
         foreach (GameObject gameOverObject in gameOverObjects)
         {
             gameOverObject.SetActive(true);
+        }
+    }
+
+    private void showWinning()
+    {
+        foreach (GameObject winningObject in winningObjects)
+        {
+            winningObject.SetActive(true);
+        }
+    }
+
+    private void hideWinning()
+    {
+        foreach (GameObject winningObject in winningObjects)
+        {
+            winningObject.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject other=collision.gameObject;
+        if (other.tag.Equals("Ends") && !other.GetComponent<EndPointsController>().achieved)
+        {
+            other.GetComponent<EndPointsController>().arriveEndPoint();
+            if (++endPointsAchievedNum==endPointObjects.Length)   // winning condition
+            {
+                showWinning();
+            }
         }
     }
 }

@@ -9,6 +9,8 @@ TagManager:
   - GameOver
   - Water
   - Ground
+  - Ends
+  - Winning
   layers:
   - Default
   - TransparentFX
