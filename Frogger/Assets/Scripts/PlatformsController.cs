@@ -24,7 +24,7 @@ public class PlatformsController : MonoBehaviour
     public int position = 0;  // the number of point the object currently at
     private float remainingWaitTime = 0, remainingMoveTime=0;
     private int direction = 1;
-    private bool stopped=false;
+    private bool stopped=false, turned=false;  // turned: record if object turned in last frame when it's in blancing method
 
     void Start()
     {
@@ -60,6 +60,7 @@ public class PlatformsController : MonoBehaviour
             {
                 direction = -direction;  // change direction
                 position += direction;
+                turned = true;
             }
             else if (movementMethod == MovementMethod.repeating && position == path.Length)
             {
@@ -71,6 +72,17 @@ public class PlatformsController : MonoBehaviour
                 stopped = true;
                 return;
             }
+
+            // prevent funny stuffs from happening if dropping frames
+            if (turned)
+            {
+                transform.position = path[0].point.transform.position;
+                turned = false;
+            }
+            else if (movementMethod == MovementMethod.blancing && direction<0)
+                transform.position = path[position-direction].point.transform.position;   // when object is blancing back
+            else
+                transform.position = path[position].point.transform.position;
             remainingMoveTime = path[position].moveTime;
             remainingWaitTime = path[position].waitTime;
         }
