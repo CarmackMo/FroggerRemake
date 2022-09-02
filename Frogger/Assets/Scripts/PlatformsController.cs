@@ -22,9 +22,14 @@ public class PlatformsController : MonoBehaviour
     };
     public MovementMethod movementMethod;
     public int position = 0;  // the number of point the object currently at
+    public float sinkTime = 0;
+    public float sinkInterval = -1;  // -1 means never sink
+    public bool sink = false;
+    public Color linesColor = Color.blue;
     private float remainingWaitTime = 0, remainingMoveTime=0;
     private int direction = 1;
     private bool stopped=false, turned=false;  // turned: record if object turned in last frame when it's in blancing method
+    private float remainingSinkTime=0, remainingSinkInterval=0;
 
     void Start()
     {
@@ -34,6 +39,16 @@ public class PlatformsController : MonoBehaviour
         // dont forget to set the last point's speed
         remainingMoveTime = path[0].moveTime;
         remainingWaitTime = path[0].waitTime;
+        if (sink)
+        {
+            remainingSinkTime = sinkTime;
+            remainingSinkInterval = 0;
+        }
+        else
+        {
+            remainingSinkInterval = sinkInterval;
+            remainingSinkTime = 0;
+        }
     }
 
     // Update is called once per frame
@@ -86,10 +101,38 @@ public class PlatformsController : MonoBehaviour
             remainingMoveTime = path[position].moveTime;
             remainingWaitTime = path[position].waitTime;
         }
+
+        
+        if (sinkInterval>0)
+        {
+            if (remainingSinkInterval>0)    
+                remainingSinkInterval -= Time.deltaTime;
+            if (remainingSinkTime > 0)
+                remainingSinkTime -= Time.deltaTime;
+            if (!sink && remainingSinkInterval <= 0)  // Time to sink!
+            {
+                sink = true;
+                remainingSinkInterval = 0;
+                remainingSinkTime = sinkTime;
+                Color color = GetComponent<Renderer>().material.color;
+                color.a = 0;
+                GetComponent<Renderer>().material.color = color;
+            }
+            else if (sink && remainingSinkTime <= 0)  // Time to float!
+            {
+                sink = false;
+                remainingSinkInterval = sinkInterval;
+                remainingSinkTime = sinkTime;
+                Color color = GetComponent<Renderer>().material.color;
+                color.a = 1;
+                GetComponent<Renderer>().material.color = color;
+            }
+        }
+
     }
-    void OnDrawGizmos()
+    void OnDrawGizmos()  // draw lines on the editer
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = linesColor;
         for (int i = 0; i < path.Length - 1; i++)
         {
             if (path[i].point && path[i + 1].point)

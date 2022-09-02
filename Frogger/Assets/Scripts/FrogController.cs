@@ -13,6 +13,7 @@ public class FrogController : MonoBehaviour
     GameObject[] endPointObjects;
     GameObject[] winningObjects;
     public int endPointsAchievedNum=0;
+    bool gameOver = false;
 
     void Start()
     {
@@ -26,6 +27,8 @@ public class FrogController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameOver)
+            return;
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput=Input.GetAxisRaw("Vertical");
         if (!linearMove)
@@ -51,26 +54,48 @@ public class FrogController : MonoBehaviour
         if (platform!=null)  // frog steps on a platform
         {
             transform.position = platform.transform.position + offset;
+            if (platform.GetComponent<PlatformsController>().sink)  // it sinked!
+            {
+                offset = new Vector3(0, 0, 0);
+                if (!linearMove)   // round the axis to int
+                    transform.position = new Vector3(Mathf.Round(transform.position.x + 0.5f) - 0.5f, Mathf.Round(transform.position.y + 0.5f) - 0.5f, Mathf.Round(transform.position.z + 0.5f) - 0.5f);
+                platform = null;
+            }
         }
         else
         {
             offset = new Vector3(0, 0, 0);
         }
     }
+
     // hit & entering partforms decection
     private void OnTriggerStay2D(Collider2D collision)
     {
         GameObject other = collision.gameObject;
+        if (other.tag.Equals("Enemy"))
+        {
+            Time.timeScale = 0;
+            showGameOver();
+            gameOver = true;
+        }
+
         if (other.tag.Equals("Platform") && platform==null)
         {
-            platform = other;
-            offset = transform.position-platform.transform.position;
+            if (!other.GetComponent<PlatformsController>().sink)
+            {
+                platform = other;
+                offset = transform.position - platform.transform.position;
+            }
+            else   // still sinkking
+                return;
         }
         else if (platform==null && (other.tag.Equals("Obstacle") ||
             other.tag.Equals("Water")))
         {
             // death or hit
+            Time.timeScale = 0;
             showGameOver();
+            gameOver = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

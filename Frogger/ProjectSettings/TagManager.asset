@@ -11,6 +11,7 @@ TagManager:
   - Ground
   - Ends
   - Winning
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -19,6 +20,7 @@ TagManager:
   - Water
   - UI
   - Player
+  - Enemy
   - Objects
   - 
   - 
@@ -43,8 +45,19 @@ TagManager:
   - 
   - 
   - 
-  - 
   m_SortingLayers:
+  - name: Ground
+    uniqueID: 1453516109
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Objects
+    uniqueID: 122576031
+    locked: 0
+  - name: Enemys
+    uniqueID: 3795259527
+    locked: 0
+  - name: Player
+    uniqueID: 2921567291
     locked: 0
