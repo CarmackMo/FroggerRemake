@@ -5214,6 +5214,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 827698844357060751, guid: 29f4ade500794144dbbe378d33a7f137, type: 3}
+      propertyPath: gameTime
+      value: 130
+      objectReference: {fileID: 0}
     - target: {fileID: 3140055845152352360, guid: 29f4ade500794144dbbe378d33a7f137, type: 3}
       propertyPath: m_Name
       value: Singleton
