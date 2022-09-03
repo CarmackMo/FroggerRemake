@@ -9,19 +9,13 @@ public class FrogController : MonoBehaviour
     public bool linearMove = false;
     GameObject platform=null;
     Vector3 offset;
-    GameObject[] gameOverObjects;
     GameObject[] endPointObjects;
-    GameObject[] winningObjects;
     public int endPointsAchievedNum=0;
     bool gameOver = false;
 
     void Start()
     {
-        gameOverObjects = GameObject.FindGameObjectsWithTag("GameOver");
-        hideGameOver();
         endPointObjects = GameObject.FindGameObjectsWithTag("Ends");
-        winningObjects = GameObject.FindGameObjectsWithTag("Winning");
-        hideWinning();
     }
 
     // Update is called once per frame
@@ -75,7 +69,7 @@ public class FrogController : MonoBehaviour
         if (other.tag.Equals("Enemy"))
         {
             Time.timeScale = 0;
-            showGameOver();
+            GamePanel.Instance.ShowGameResult(false);
             gameOver = true;
         }
 
@@ -94,7 +88,7 @@ public class FrogController : MonoBehaviour
         {
             // death or hit
             Time.timeScale = 0;
-            showGameOver();
+            GamePanel.Instance.ShowGameResult(false);
             gameOver = true;
         }
     }
@@ -110,36 +104,6 @@ public class FrogController : MonoBehaviour
         }
     }
 
-    private void hideGameOver()
-    {
-        foreach (GameObject gameOverObject in gameOverObjects)
-        {
-            gameOverObject.SetActive(false);
-        }
-    }
-    private void showGameOver()
-    {
-        foreach (GameObject gameOverObject in gameOverObjects)
-        {
-            gameOverObject.SetActive(true);
-        }
-    }
-
-    private void showWinning()
-    {
-        foreach (GameObject winningObject in winningObjects)
-        {
-            winningObject.SetActive(true);
-        }
-    }
-
-    private void hideWinning()
-    {
-        foreach (GameObject winningObject in winningObjects)
-        {
-            winningObject.SetActive(false);
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -149,7 +113,7 @@ public class FrogController : MonoBehaviour
             other.GetComponent<EndPointsController>().arriveEndPoint();
             if (++endPointsAchievedNum==endPointObjects.Length)   // winning condition
             {
-                showWinning();
+                GamePanel.Instance.ShowGameResult(true);
             }
         }
     }

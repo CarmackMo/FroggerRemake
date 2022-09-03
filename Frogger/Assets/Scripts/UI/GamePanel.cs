@@ -8,6 +8,9 @@ public class GamePanel : CanvasSingleton<GamePanel>
 {
     public TextMeshProUGUI timerText;
 
+    public GameObject gameResult;
+
+
     public void UpdateTimer(int time)
     {
 
@@ -28,4 +31,23 @@ public class GamePanel : CanvasSingleton<GamePanel>
 
         timerText.text = text;
     }
+
+    public void ShowGameResult(bool status)
+    {
+        TextMeshProUGUI resultText = gameResult.GetComponent<TextMeshProUGUI>();
+
+        if (status == true)
+            resultText.text = $"YOU WIN!";
+        else
+            resultText.text = $"YOU LOSE!";
+
+        gameResult.SetActive(true);
+    }
+
+
+    public void HideGameResult()
+    {
+        gameResult.SetActive(false);
+    }
+
 }
