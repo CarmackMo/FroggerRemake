@@ -5,12 +5,14 @@ using UnityEngine;
 public class GameplayController : MonoBehaviour
 {
     public float gameTime = 0f;
-
+    public float obstacleGenerateInterval = 0f;
+    public GameObject KnockBackObstacle;
 
 
     private void Start()
     {
         StartCoroutine(TimerCoroutrine());
+        StartCoroutine(ObstacleGenerateCoroutine());
     }
 
 
@@ -27,6 +29,24 @@ public class GameplayController : MonoBehaviour
         yield break;
 
     }
+
+
+    IEnumerator ObstacleGenerateCoroutine()
+    {
+        float count = obstacleGenerateInterval;
+        while (true)
+        {
+            if(count <= 0)
+            {
+                Instantiate(KnockBackObstacle);
+                count = obstacleGenerateInterval;
+            }
+
+            count -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
 
 
 }

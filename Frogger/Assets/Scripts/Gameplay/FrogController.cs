@@ -11,6 +11,7 @@ public class FrogController : MonoBehaviour
     Vector3 offset;
     GameObject[] endPointObjects;
     public int endPointsAchievedNum=0;
+    public int knockBackStregth = 0;
     bool gameOver = false;
 
     void Start()
@@ -115,6 +116,10 @@ public class FrogController : MonoBehaviour
             {
                 GamePanel.Instance.ShowGameResult(true);
             }
+        }
+        else if (other != null && other.GetComponent<Obstacles>() != null)  // KnockBack
+        {
+            transform.Translate(Vector3.down * knockBackStregth);
         }
     }
 }
