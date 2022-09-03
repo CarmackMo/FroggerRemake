@@ -14,6 +14,8 @@ public class GameplayController : MonoBehaviour
     {
         StartCoroutine(TimerCoroutrine());
         StartCoroutine(ObstacleGenerateCoroutine());
+
+        GamePanel.Instance.UpdateHPText(0, frog.totalHP);
     }
 
 
@@ -28,7 +30,6 @@ public class GameplayController : MonoBehaviour
         }
 
         frog.SetGameOver();
-        GamePanel.Instance.ShowGameResult(false);
         yield break;
 
     }

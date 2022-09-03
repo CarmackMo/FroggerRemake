@@ -9,6 +9,11 @@ public class Obstacles : MonoBehaviour
     public Vector3 direction = Vector3.zero;
 
 
+    public bool knockbackable = false;
+    public float knockbackStrength = 0f;
+
+
+
 
     private void Start()
     {

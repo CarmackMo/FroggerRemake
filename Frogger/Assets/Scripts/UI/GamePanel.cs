@@ -7,7 +7,7 @@ using TMPro;
 public class GamePanel : CanvasSingleton<GamePanel>
 {
     public TextMeshProUGUI timerText;
-
+    public TextMeshProUGUI HPText;
     public GameObject gameResult;
 
 
@@ -30,6 +30,11 @@ public class GamePanel : CanvasSingleton<GamePanel>
             text += $"{sec}";
 
         timerText.text = text;
+    }
+
+    public void UpdateHPText(int damage, int totalHP)
+    {
+        HPText.text = $"HP: {totalHP - damage}/{totalHP}";
     }
 
     public void ShowGameResult(bool status)
