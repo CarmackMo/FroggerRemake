@@ -7,6 +7,7 @@ public class GameplayController : MonoBehaviour
     public float gameTime = 0f;
     public float obstacleGenerateInterval = 0f;
     public GameObject KnockBackObstacle;
+    public FrogController frog;
 
 
     private void Start()
@@ -26,6 +27,8 @@ public class GameplayController : MonoBehaviour
             gameTime -= Time.deltaTime;
         }
 
+        frog.SetGameOver();
+        GamePanel.Instance.ShowGameResult(false);
         yield break;
 
     }

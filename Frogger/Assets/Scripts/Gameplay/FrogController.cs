@@ -71,7 +71,7 @@ public class FrogController : MonoBehaviour
         {
             Time.timeScale = 0;
             GamePanel.Instance.ShowGameResult(false);
-            gameOver = true;
+            SetGameOver();
         }
 
         if (other.tag.Equals("Platform") && platform==null)
@@ -90,7 +90,7 @@ public class FrogController : MonoBehaviour
             // death or hit
             Time.timeScale = 0;
             GamePanel.Instance.ShowGameResult(false);
-            gameOver = true;
+            SetGameOver();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -121,5 +121,10 @@ public class FrogController : MonoBehaviour
         {
             transform.Translate(Vector3.down * knockBackStregth);
         }
+    }
+
+    public void SetGameOver()
+    {
+        gameOver = true;
     }
 }

@@ -5423,6 +5423,10 @@ PrefabInstance:
       value: Singleton
       objectReference: {fileID: 0}
     - target: {fileID: 6050255704073624878, guid: dc2b198d2d9e2c7419c187f1986348dd, type: 3}
+      propertyPath: frog
+      value: 
+      objectReference: {fileID: 2127054704}
+    - target: {fileID: 6050255704073624878, guid: dc2b198d2d9e2c7419c187f1986348dd, type: 3}
       propertyPath: gameTime
       value: 130
       objectReference: {fileID: 0}
