@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4509658638316926616}
   - component: {fileID: 6050255704073624878}
   m_Layer: 0
-  m_Name: Singleton
+  m_Name: GameplayController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

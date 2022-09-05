@@ -5,26 +5,22 @@ using UnityEngine;
 public class FrogController : MonoBehaviour
 {
     // Start is called before the first frame update
-    float lastHorizontalInput=0, lastVerticalInput=0;  //  input from last flame
     public bool linearMove = false;
-    GameObject platform=null;
-    Vector3 offset;
-    GameObject[] endPointObjects;
-    public int endPointsAchievedNum=0;
     public int totalHP = 0;
-    bool gameOver = false;
+    public Vector3 initPos = Vector3.zero;
+
+    private float lastHorizontalInput=0, lastVerticalInput=0;  //  input from last flame
+    private GameObject platform=null;
+    private Vector3 offset;
 
     private int damage = 0;
 
-    void Start()
-    {
-        endPointObjects = GameObject.FindGameObjectsWithTag("Ends");
-    }
+    void Start() {}
 
     // Update is called once per frame
     void Update()
     {
-        if (gameOver)
+        if (GameplayController.Instance.gameOver)
             return;
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput=Input.GetAxisRaw("Vertical");
@@ -71,8 +67,7 @@ public class FrogController : MonoBehaviour
         GameObject other = collision.gameObject;
         if (other.tag.Equals("Enemy"))
         {
-            Time.timeScale = 0;
-            SetGameOver();
+            GameplayController.Instance.SetGameOver(false);
         }
 
         if (other.tag.Equals("Platform") && platform==null)
@@ -89,8 +84,7 @@ public class FrogController : MonoBehaviour
             other.tag.Equals("Water")))
         {
             // death or hit
-            Time.timeScale = 0;
-            SetGameOver();
+            GameplayController.Instance.SetGameOver(false);
         }
     }
 
@@ -113,9 +107,11 @@ public class FrogController : MonoBehaviour
         if (other.tag.Equals("Ends") && !other.GetComponent<EndPointsController>().achieved)
         {
             other.GetComponent<EndPointsController>().arriveEndPoint();
-            if (++endPointsAchievedNum==endPointObjects.Length)   // winning condition
+            GameplayController.Instance.IncreaseAchievedObjective();
+
+            if (GameplayController.Instance.gameOver == false)
             {
-                GamePanel.Instance.ShowGameResult(true);
+                transform.position = initPos;
             }
         }
         else if (other != null &&
@@ -125,17 +121,11 @@ public class FrogController : MonoBehaviour
             damage++;
             Obstacles obstacles = other.GetComponent<Obstacles>();
             GamePanel.Instance.UpdateHPText(damage, totalHP);
-            
+
             if (totalHP - damage > 0)
                 transform.Translate(Vector3.down * obstacles.knockbackStrength);
             else
-                SetGameOver();
+                GameplayController.Instance.SetGameOver(false);
         }
-    }
-
-    public void SetGameOver()
-    {
-        gameOver = true;
-        GamePanel.Instance.ShowGameResult(false);
     }
 }

@@ -4,11 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GamePanel : CanvasSingleton<GamePanel>
+public class GamePanel : Singleton<GamePanel>
 {
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI HPText;
     public GameObject gameResult;
+
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 
 
     public void UpdateTimer(int time)
@@ -37,6 +48,10 @@ public class GamePanel : CanvasSingleton<GamePanel>
         HPText.text = $"HP: {totalHP - damage}/{totalHP}";
     }
 
+    /// <summary>
+    /// Player win: status = true;
+    /// Player lose: status = false; 
+    /// </summary>
     public void ShowGameResult(bool status)
     {
         TextMeshProUGUI resultText = gameResult.GetComponent<TextMeshProUGUI>();
@@ -48,7 +63,6 @@ public class GamePanel : CanvasSingleton<GamePanel>
 
         gameResult.SetActive(true);
     }
-
 
     public void HideGameResult()
     {
