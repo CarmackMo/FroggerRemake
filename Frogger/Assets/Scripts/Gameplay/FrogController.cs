@@ -15,7 +15,7 @@ public class FrogController : MonoBehaviour
 
     private int damage = 0;
 
-    void Start() {}
+    void Start() { }
 
     // Update is called once per frame
     void Update()
