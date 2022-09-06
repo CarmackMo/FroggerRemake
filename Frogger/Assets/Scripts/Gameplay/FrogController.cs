@@ -120,7 +120,7 @@ public class FrogController : MonoBehaviour
             Obstacles obstacle = other.GetComponent<Obstacles>();
 
             // If is a knock back obstacle, deal with knock back logic
-            if (obstacle.knockbackable)
+            if (obstacle.type == Generator.ObjectType.KnockBackObstacle)
             {
                 damage++;
                 GamePanel.Instance.UpdateHPText(damage, totalHP);

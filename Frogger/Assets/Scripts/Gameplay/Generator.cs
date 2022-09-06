@@ -9,12 +9,16 @@ public class Generator : MonoBehaviour
         NormalObstacle,  
         KnockBackObstacle, 
         NormalPlatform, 
+        EnemyPlarform,
+        SinkingPlatform,
     }
 
     [Header("Prefabs")]
     public GameObject obstacle;
     public GameObject knockBack;
-    public GameObject platform;
+    public GameObject normalPlatform;
+    public GameObject enemyPlatform;
+    public GameObject sinkingPlatform;
 
     [Header("Generate Parameters")]
     public Vector2 interval = Vector2.zero;             // Generate interval is within a range
@@ -22,8 +26,9 @@ public class Generator : MonoBehaviour
     public ObjectType type = ObjectType.NormalObstacle;
 
     [Header("Object Parameters")]
-    public float speed = 0;
+    public Vector2 speed = Vector2.zero;                // Moving speed of the object is within a range
 
+    [Header("Obstacle Parameters")]
     public bool knockbackable = false;
     public float knockbackStrength = 0;
 
@@ -43,7 +48,11 @@ public class Generator : MonoBehaviour
             case ObjectType.KnockBackObstacle:
                 return knockBack;
             case ObjectType.NormalPlatform:
-                return platform;
+                return normalPlatform;
+            case ObjectType.EnemyPlarform:
+                return enemyPlatform;
+            case ObjectType.SinkingPlatform:
+                return sinkingPlatform;
             default:
                 return obstacle;
         }
@@ -68,11 +77,13 @@ public class Generator : MonoBehaviour
 
                 if (type == ObjectType.NormalObstacle || type == ObjectType.KnockBackObstacle)
                 {
-                    obj.GetComponent<Obstacles>().ObstacleInit(speed, direction, knockbackable, knockbackStrength);
+                    obj.GetComponent<Obstacles>().
+                        ObstacleInit(Random.Range(speed.x, speed.y), direction, type,  knockbackable, knockbackStrength);
                 }
                 else
                 {
-
+                    obj.GetComponent<Platforms>()
+                        .PlatformInit(Random.Range(speed.x, speed.y), direction, type);
                 }
 
                 count = Random.Range(interval.x, interval.y);
