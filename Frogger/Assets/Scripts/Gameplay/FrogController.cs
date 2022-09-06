@@ -7,21 +7,33 @@ public class FrogController : MonoBehaviour
     // Start is called before the first frame update
     public bool linearMove = false;
     public int totalHP = 0;
-    public Vector3 initPos = Vector3.zero;
+    private Vector3 initPos;
 
     private float lastHorizontalInput=0, lastVerticalInput=0;  //  input from last flame
     private GameObject platform=null;
     private Vector3 offset;
-
+    private bool dying=false;
     private int damage = 0;
 
-    void Start() { }
+    void Start()
+    {
+        initPos = transform.position;
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (GameplayController.Instance.gameOver)
             return;
+        if (dying)
+        {
+            if (platform != null||transform.position==initPos)  
+            {
+                dying = false;
+            }
+            else  // no platform? dead
+                GameplayController.Instance.SetGameOver(false);
+        }
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput=Input.GetAxisRaw("Vertical");
         if (!linearMove)
@@ -84,7 +96,7 @@ public class FrogController : MonoBehaviour
             other.tag.Equals("Water")))
         {
             // death or hit
-            GameplayController.Instance.SetGameOver(false);
+            dying = true;  // steped on water, judge if there is a platform next frame
         }
     }
 
@@ -103,7 +115,7 @@ public class FrogController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject other=collision.gameObject;
+        GameObject other = collision.gameObject;
         if (other.tag.Equals("Ends") && !other.GetComponent<EndPointsController>().achieved)
         {
             other.GetComponent<EndPointsController>().arriveEndPoint();

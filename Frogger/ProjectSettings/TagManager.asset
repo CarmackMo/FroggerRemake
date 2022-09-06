@@ -58,6 +58,9 @@ TagManager:
   - name: Enemys
     uniqueID: 3795259527
     locked: 0
+  - name: Boundary
+    uniqueID: 1397034767
+    locked: 0
   - name: Player
     uniqueID: 2921567291
     locked: 0

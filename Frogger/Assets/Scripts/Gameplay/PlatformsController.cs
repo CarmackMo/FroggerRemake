@@ -12,20 +12,21 @@ public class PlatformsController : MonoBehaviour
         public GameObject point;
         public float moveTime;
         public float waitTime;
-        public Vector3 speed;  // move speed to next point
+        public Vector3 speed;  // move speed to next point, automatically calculated in start function
     }
 
     public Path[] path;
     public enum MovementMethod 
     {
-        blancing, repeating, stopping
+        repeating, blancing, stopping
     };
     public MovementMethod movementMethod;
     public int position = 0;  // the number of point the object currently at
-    public float sinkTime = 0;
+    public float sinkTime = 0;  // how long will platform sink
     public float sinkInterval = -1;  // -1 means never sink
-    public bool sink = false;
-    public Color linesColor = Color.blue;
+    public bool sink = false;   // platform is sinking or not
+    public float initialWaitTime = 0;  // wait time for starting only
+    public Color linesColor = Color.blue;  // line's color that links points in the editor
     private float remainingWaitTime = 0, remainingMoveTime=0;
     private int direction = 1;
     private bool stopped=false, turned=false;  // turned: record if object turned in last frame when it's in blancing method
@@ -49,6 +50,7 @@ public class PlatformsController : MonoBehaviour
             remainingSinkInterval = sinkInterval;
             remainingSinkTime = 0;
         }
+        transform.position = path[position].point.transform.position;
     }
 
     // Update is called once per frame
@@ -56,16 +58,21 @@ public class PlatformsController : MonoBehaviour
     {
         if (stopped)
             return;
-        if (remainingMoveTime>0)  // still moving
+        if (initialWaitTime>0)
+        {
+            initialWaitTime -= Time.deltaTime;
+            return;
+        }
+        if (remainingWaitTime > 0) // still waiting
+        {
+            remainingWaitTime -= Time.deltaTime;
+            remainingWaitTime = Mathf.Max(remainingWaitTime, 0);
+        }
+        if (remainingWaitTime == 0 && remainingMoveTime >0)  // still moving
         {
             remainingMoveTime -= Time.deltaTime;
             remainingMoveTime = Mathf.Max(remainingMoveTime, 0);
             transform.position += direction * Time.deltaTime * path[position].speed;
-        }
-        if (remainingMoveTime==0&&remainingWaitTime > 0) // still waiting
-        {
-            remainingWaitTime -= Time.deltaTime;
-            remainingWaitTime = Mathf.Max(remainingWaitTime, 0);
         }
         if (remainingWaitTime==0&& remainingMoveTime == 0)  // time to head off next point
         {
@@ -114,7 +121,7 @@ public class PlatformsController : MonoBehaviour
                 sink = true;
                 remainingSinkInterval = 0;
                 remainingSinkTime = sinkTime;
-                Color color = GetComponent<Renderer>().material.color;
+                Color color = GetComponent<Renderer>().material.color;   // sink code
                 color.a = 0;
                 GetComponent<Renderer>().material.color = color;
             }
