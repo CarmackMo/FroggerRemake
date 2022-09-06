@@ -1,3 +1,0 @@
-. filter=lfs diff=lfs merge=lfs -text
-*.FILE filter=lfs diff=lfs merge=lfs -text
-*lld filter=lfs diff=lfs merge=lfs -text
