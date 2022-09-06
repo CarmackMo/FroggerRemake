@@ -115,17 +115,27 @@ public class FrogController : MonoBehaviour
             }
         }
         else if (other != null &&
-                 other.GetComponent<Obstacles>() != null &&
-                 other.GetComponent<Obstacles>().knockbackable)  // Knockback
+                 other.GetComponent<Obstacles>() != null)
         {
-            damage++;
-            Obstacles obstacles = other.GetComponent<Obstacles>();
-            GamePanel.Instance.UpdateHPText(damage, totalHP);
+            Obstacles obstacle = other.GetComponent<Obstacles>();
 
-            if (totalHP - damage > 0)
-                transform.Translate(Vector3.down * obstacles.knockbackStrength);
+            // If is a knock back obstacle, deal with knock back logic
+            if (obstacle.knockbackable)
+            {
+                damage++;
+                GamePanel.Instance.UpdateHPText(damage, totalHP);
+
+                if (totalHP - damage > 0)
+                    transform.Translate(Vector3.down * obstacle.knockbackStrength);
+                else
+                    GameplayController.Instance.SetGameOver(false);
+
+            }
+            // If is a non konck back obstacle, player die immediately
             else
+            {
                 GameplayController.Instance.SetGameOver(false);
+            }
         }
     }
 }
