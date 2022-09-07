@@ -88,6 +88,7 @@ public class FrogController : MonoBehaviour
             {
                 platform = other;
                 offset = transform.position - platform.transform.position;
+                offset.y=Mathf.Round(offset.y);
             }
             else   // still sinkking
                 return;

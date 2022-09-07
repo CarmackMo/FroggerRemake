@@ -9,7 +9,7 @@ public class PlatformsController : MonoBehaviour
     [Serializable]
     public class Path   // used to make the object move along the trajectory
     {
-        public GameObject point;
+        public Transform point;
         public float moveTime;
         public float waitTime;
         public Vector3 speed;  // move speed to next point, automatically calculated in start function
@@ -35,8 +35,8 @@ public class PlatformsController : MonoBehaviour
     void Start()
     {
         for(int i = 0; i < path.Length - 1; i++)
-            path[i].speed = (path[i + 1].point.transform.position - path[i].point.transform.position) / path[i].moveTime;
-        path[^1].speed = (path[0].point.transform.position - path[^1].point.transform.position) / path[^1].moveTime;
+            path[i].speed = (path[i + 1].point.position - path[i].point.transform.position) / path[i].moveTime;
+        path[^1].speed = (path[0].point.position - path[^1].point.transform.position) / path[^1].moveTime;
         // dont forget to set the last point's speed
         remainingMoveTime = path[0].moveTime;
         remainingWaitTime = path[0].waitTime;
@@ -50,7 +50,7 @@ public class PlatformsController : MonoBehaviour
             remainingSinkInterval = sinkInterval;
             remainingSinkTime = 0;
         }
-        transform.position = path[position].point.transform.position;
+        transform.position = path[position].point.position;
     }
 
     // Update is called once per frame
@@ -87,7 +87,7 @@ public class PlatformsController : MonoBehaviour
             else if (movementMethod == MovementMethod.repeating && position == path.Length)
             {
                 position = 0;
-                transform.position = path[0].point.transform.position;  // make it back to first point
+                transform.position = path[0].point.position;  // make it back to first point
             }
             else if (movementMethod == MovementMethod.stopping && position == path.Length)
             {
@@ -98,13 +98,13 @@ public class PlatformsController : MonoBehaviour
             // prevent funny stuffs from happening if dropping frames
             if (turned)
             {
-                transform.position = path[0].point.transform.position;
+                transform.position = path[0].point.position;
                 turned = false;
             }
             else if (movementMethod == MovementMethod.blancing && direction<0)
-                transform.position = path[position-direction].point.transform.position;   // when object is blancing back
+                transform.position = path[position-direction].point.position;   // when object is blancing back
             else
-                transform.position = path[position].point.transform.position;
+                transform.position = path[position].point.position;
             remainingMoveTime = path[position].moveTime;
             remainingWaitTime = path[position].waitTime;
         }
@@ -144,7 +144,7 @@ public class PlatformsController : MonoBehaviour
         {
             if (path[i].point && path[i + 1].point)
             {
-                Gizmos.DrawLine(path[i].point.transform.position, path[i + 1].point.transform.position);
+                Gizmos.DrawLine(path[i].point.position, path[i + 1].point.position);
             }
         }
     }
