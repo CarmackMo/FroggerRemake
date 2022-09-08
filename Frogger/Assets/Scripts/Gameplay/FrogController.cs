@@ -62,14 +62,14 @@ public class FrogController : MonoBehaviour
             if (platform.GetComponent<PlatformsController>().sink)  // it sinked!
             {
                 offset = new Vector3(0, 0, 0);
-                if (!linearMove)   // round the axis to int
-                    transform.position = new Vector3(Mathf.Round(transform.position.x + 0.5f) - 0.5f, Mathf.Round(transform.position.y + 0.5f) - 0.5f, Mathf.Round(transform.position.z + 0.5f) - 0.5f);
                 platform = null;
             }
         }
         else
         {
             offset = new Vector3(0, 0, 0);
+            if (!linearMove)   // round the axis to int
+                transform.position = new Vector3(Mathf.Round(transform.position.x + 0.5f) - 0.5f, Mathf.Round(transform.position.y + 0.5f) - 0.5f, Mathf.Round(transform.position.z + 0.5f) - 0.5f);
         }
     }
 
@@ -84,7 +84,7 @@ public class FrogController : MonoBehaviour
 
         if (other.tag.Equals("Platform") && platform==null)
         {
-            if (!other.GetComponent<PlatformsController>().sink)
+            if (!other.GetComponent<PlatformsController>().sink)  // step on an sinking platform
             {
                 platform = other;
                 offset = transform.position - platform.transform.position;
