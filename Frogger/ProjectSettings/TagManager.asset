@@ -12,6 +12,7 @@ TagManager:
   - Ends
   - Winning
   - Enemy
+  - Lava
   layers:
   - Default
   - TransparentFX
