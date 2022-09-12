@@ -187,12 +187,12 @@ public class FrogController : MonoBehaviour
             ContactFilter2D filter = new ContactFilter2D();  // try to find another platform to stand on
             filter.useTriggers = true;
             Collider2D[] results = new Collider2D[10];
-            collision.OverlapCollider(filter, results);
+            GetComponent<Collider2D>().OverlapCollider(filter, results);
             foreach (Collider2D p in results)
             {
                 if (!p)  //no platform
                     break;
-                if (p.gameObject.tag.Equals("Platform"))
+                if (p.gameObject.tag.Equals("Platform")&&platform!=p)
                 {
                     switchPlatform(p.gameObject);
                     break;

@@ -18,6 +18,8 @@ public class LavaController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (secondPreTile <=0)
+            return;
         if (transform.position.y<maxPostion)
         {
             transform.Translate(Vector3.up*Time.deltaTime*speed);
