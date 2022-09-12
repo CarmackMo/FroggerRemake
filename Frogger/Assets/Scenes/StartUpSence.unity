@@ -7538,6 +7538,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6050255704073624878, guid: dc2b198d2d9e2c7419c187f1986348dd, type: 3}
+      propertyPath: protectTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6050255704073624878, guid: dc2b198d2d9e2c7419c187f1986348dd, type: 3}
       propertyPath: KnockBackObstacle
       value: 
       objectReference: {fileID: 603931303188117906, guid: eb9d34a206af3224d90006f0405aeb61, type: 3}
@@ -14073,7 +14077,7 @@ MonoBehaviour:
   totalHP: 8
   linearMovementSpeed: 3
   knockbackStrength: 1
-  knockbackTime: 0.2
+  knockbackTime: 0.1
   animator: {fileID: 1545695420}
   movementMethod: 0
   initMovementMethod: 0

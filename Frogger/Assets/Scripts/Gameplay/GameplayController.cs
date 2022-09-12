@@ -9,23 +9,25 @@ public class GameplayController : Singleton<GameplayController>
 
     public FrogController frog;
 
+    private bool isGameStart = false;
     private int objectiveNum = 0;
     private int achieveNum = 0;
 
 
     private void Start()
     {
-        StartCoroutine(TimerCoroutrine());
-        //StartCoroutine(ObstacleGenerateCoroutine());
-
         GamePanel.Instance.UpdateHPText(0, frog.totalHP);
 
         objectiveNum = GameObject.FindGameObjectsWithTag("Ends").Length;
 
+        Time.timeScale = 0;
     }
 
 
-    private void Update() { }
+    private void Update() 
+    {
+        ProtectionState();
+    }
 
 
 
@@ -56,7 +58,7 @@ public class GameplayController : Singleton<GameplayController>
     {
         while (gameTime > 0)
         {
-            GamePanel.Instance.UpdateTimer((int)gameTime);
+            GamePanel.Instance.UpdateCoundDownTimer((int)gameTime);
             yield return new WaitForEndOfFrame();
             gameTime -= Time.deltaTime;
         }
@@ -64,6 +66,17 @@ public class GameplayController : Singleton<GameplayController>
         SetGameOver(false);
         yield break;
 
+    }
+
+    public void ProtectionState()
+    {
+        if (Input.anyKey == true && !isGameStart)
+        {
+            isGameStart = true;
+            Time.timeScale = 1;
+            GamePanel.Instance.HideProtectText();
+            StartCoroutine(TimerCoroutrine());
+        }
     }
 
 }

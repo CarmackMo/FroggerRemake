@@ -253,12 +253,7 @@ public class FrogController : MonoBehaviour
             GamePanel.Instance.UpdateHPText(damage, totalHP);
 
             if (totalHP - damage > 0)
-            {
                 StartCoroutine(KnockbackCoroutine());
-
-            }
-
-                //transform.Translate(Vector3.down * knockbackStrength);
             else
                 GameplayController.Instance.SetGameOver(false);
         }
@@ -280,8 +275,5 @@ public class FrogController : MonoBehaviour
 
         yield break;
     }
-
-
-
 }
 

@@ -6,8 +6,9 @@ using TMPro;
 
 public class GamePanel : Singleton<GamePanel>
 {
-    public TextMeshProUGUI timerText;
     public TextMeshProUGUI HPText;
+    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI protectText;
     public GameObject gameResult;
 
 
@@ -22,9 +23,8 @@ public class GamePanel : Singleton<GamePanel>
     }
 
 
-    public void UpdateTimer(int time)
+    public void UpdateCoundDownTimer(int time)
     {
-
         int min = time / 60;
         int sec = time % 60;
 
@@ -69,4 +69,8 @@ public class GamePanel : Singleton<GamePanel>
         gameResult.SetActive(false);
     }
 
+    public void HideProtectText()
+    {
+        protectText.gameObject.SetActive(false);
+    }
 }
