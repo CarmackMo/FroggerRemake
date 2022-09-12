@@ -6,6 +6,8 @@ public class FrogController : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool linearMove = false;
+    public Animator animator;
+
     public int totalHP = 0;
     private Vector3 initPos;
 
@@ -38,19 +40,40 @@ public class FrogController : MonoBehaviour
         float verticalInput=Input.GetAxisRaw("Vertical");
         if (!linearMove)
         {
+            //animator.SetFloat("HorizontalDireciton", 0);
+            //animator.SetFloat("VerticalDirection", 0);
+
             if (lastHorizontalInput == 0 && horizontalInput != 0)
             {
+                animator.SetFloat("VerticalDirection", 0);
                 if (horizontalInput > 0)
+                {
                     offset.x += 1;
+                    animator.SetFloat("HorizontalDireciton", 1);
+                    animator.SetTrigger("PlayerInput");
+                }
                 else
+                {
                     offset.x -= 1;
+                    animator.SetFloat("HorizontalDireciton", -1);
+                    animator.SetTrigger("PlayerInput");
+                }
             }
             else if (lastVerticalInput==0&&verticalInput!=0)  // prevent simultaneously input
             {
+                animator.SetFloat("HorizontalDireciton", 0);
                 if (verticalInput > 0)
+                {
                     offset.y += 1;
+                    animator.SetFloat("VerticalDirection", 1);
+                    animator.SetTrigger("PlayerInput");
+                }
                 else
+                {
                     offset.y -= 1;
+                    animator.SetFloat("VerticalDirection", -1);
+                    animator.SetTrigger("PlayerInput");
+                }
             }
             transform.Translate(offset);
             lastHorizontalInput = horizontalInput;
