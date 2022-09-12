@@ -26,7 +26,9 @@ public class PlatformsController : MonoBehaviour
     public float sinkInterval = -1;  // -1 means never sink
     public bool sink = false;   // platform is sinking or not
     public float initialWaitTime = 0;  // wait time for starting only
+    public float direct = 0;
     public Color linesColor = Color.blue;  // line's color that links points in the editor
+    public Animator animator;
     private float remainingWaitTime = 0, remainingMoveTime=0;
     private int direction = 1;
     private bool stopped=false, turned=false;  // turned: record if object turned in last frame when it's in blancing method
@@ -51,11 +53,17 @@ public class PlatformsController : MonoBehaviour
             remainingSinkTime = 0;
         }
         transform.position = path[position].point.position;
+
+        if (animator != null)
+            animator.SetBool("IsObstacle", tag == "Obstacle" ? true : false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (animator != null)
+            animator.SetFloat("Direction", direct);
+
         if (stopped)
             return;
         if (initialWaitTime>0)

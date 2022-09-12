@@ -105,7 +105,9 @@ MonoBehaviour:
   sinkInterval: -1
   sink: 0
   initialWaitTime: 0
+  direct: 0
   linesColor: {r: 0, g: 0, b: 1, a: 1}
+  animator: {fileID: 0}
 --- !u!61 &1661581801197435234
 BoxCollider2D:
   m_ObjectHideFlags: 0
