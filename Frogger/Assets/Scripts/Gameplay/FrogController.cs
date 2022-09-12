@@ -6,39 +6,74 @@ public class FrogController : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool linearMove = false;
+    public Animator animator;
+
     public int totalHP = 0;
-    public Vector3 initPos = Vector3.zero;
+    private Vector3 initPos;
 
     private float lastHorizontalInput=0, lastVerticalInput=0;  //  input from last flame
     private GameObject platform=null;
     private Vector3 offset;
-
+    private bool dying=false;
     private int damage = 0;
 
-    void Start() { }
+    void Start()
+    {
+        initPos = transform.position;
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (GameplayController.Instance.gameOver)
             return;
+        if (dying)
+        {
+            if (platform != null||transform.position==initPos)  
+            {
+                dying = false;
+            }
+            else  // no platform? dead
+                GameplayController.Instance.SetGameOver(false);
+        }
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput=Input.GetAxisRaw("Vertical");
         if (!linearMove)
         {
+            //animator.SetFloat("HorizontalDireciton", 0);
+            //animator.SetFloat("VerticalDirection", 0);
+
             if (lastHorizontalInput == 0 && horizontalInput != 0)
             {
+                animator.SetFloat("VerticalDirection", 0);
                 if (horizontalInput > 0)
+                {
                     offset.x += 1;
+                    animator.SetFloat("HorizontalDireciton", 1);
+                    animator.SetTrigger("PlayerInput");
+                }
                 else
+                {
                     offset.x -= 1;
+                    animator.SetFloat("HorizontalDireciton", -1);
+                    animator.SetTrigger("PlayerInput");
+                }
             }
             else if (lastVerticalInput==0&&verticalInput!=0)  // prevent simultaneously input
             {
+                animator.SetFloat("HorizontalDireciton", 0);
                 if (verticalInput > 0)
+                {
                     offset.y += 1;
+                    animator.SetFloat("VerticalDirection", 1);
+                    animator.SetTrigger("PlayerInput");
+                }
                 else
+                {
                     offset.y -= 1;
+                    animator.SetFloat("VerticalDirection", -1);
+                    animator.SetTrigger("PlayerInput");
+                }
             }
             transform.Translate(offset);
             lastHorizontalInput = horizontalInput;
@@ -50,14 +85,14 @@ public class FrogController : MonoBehaviour
             if (platform.GetComponent<PlatformsController>().sink)  // it sinked!
             {
                 offset = new Vector3(0, 0, 0);
-                if (!linearMove)   // round the axis to int
-                    transform.position = new Vector3(Mathf.Round(transform.position.x + 0.5f) - 0.5f, Mathf.Round(transform.position.y + 0.5f) - 0.5f, Mathf.Round(transform.position.z + 0.5f) - 0.5f);
                 platform = null;
             }
         }
         else
         {
             offset = new Vector3(0, 0, 0);
+            if (!linearMove)   // round the axis to int
+                transform.position = new Vector3(Mathf.Round(transform.position.x + 0.5f) - 0.5f, Mathf.Round(transform.position.y + 0.5f) - 0.5f, Mathf.Round(transform.position.z + 0.5f) - 0.5f);
         }
     }
 
@@ -72,10 +107,11 @@ public class FrogController : MonoBehaviour
 
         if (other.tag.Equals("Platform") && platform==null)
         {
-            if (!other.GetComponent<PlatformsController>().sink)
+            if (!other.GetComponent<PlatformsController>().sink)  // step on an sinking platform
             {
                 platform = other;
                 offset = transform.position - platform.transform.position;
+                offset.y=Mathf.Round(offset.y);
             }
             else   // still sinkking
                 return;
@@ -84,7 +120,7 @@ public class FrogController : MonoBehaviour
             other.tag.Equals("Water")))
         {
             // death or hit
-            GameplayController.Instance.SetGameOver(false);
+            dying = true;  // steped on water, judge if there is a platform next frame
         }
     }
 
@@ -103,7 +139,7 @@ public class FrogController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject other=collision.gameObject;
+        GameObject other = collision.gameObject;
         if (other.tag.Equals("Ends") && !other.GetComponent<EndPointsController>().achieved)
         {
             other.GetComponent<EndPointsController>().arriveEndPoint();

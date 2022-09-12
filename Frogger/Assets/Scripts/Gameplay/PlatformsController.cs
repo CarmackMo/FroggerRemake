@@ -9,23 +9,24 @@ public class PlatformsController : MonoBehaviour
     [Serializable]
     public class Path   // used to make the object move along the trajectory
     {
-        public GameObject point;
+        public Transform point;
         public float moveTime;
         public float waitTime;
-        public Vector3 speed;  // move speed to next point
+        public Vector3 speed;  // move speed to next point, automatically calculated in start function
     }
 
     public Path[] path;
     public enum MovementMethod 
     {
-        blancing, repeating, stopping
+        repeating, blancing, stopping
     };
     public MovementMethod movementMethod;
     public int position = 0;  // the number of point the object currently at
-    public float sinkTime = 0;
+    public float sinkTime = 0;  // how long will platform sink
     public float sinkInterval = -1;  // -1 means never sink
-    public bool sink = false;
-    public Color linesColor = Color.blue;
+    public bool sink = false;   // platform is sinking or not
+    public float initialWaitTime = 0;  // wait time for starting only
+    public Color linesColor = Color.blue;  // line's color that links points in the editor
     private float remainingWaitTime = 0, remainingMoveTime=0;
     private int direction = 1;
     private bool stopped=false, turned=false;  // turned: record if object turned in last frame when it's in blancing method
@@ -34,8 +35,8 @@ public class PlatformsController : MonoBehaviour
     void Start()
     {
         for(int i = 0; i < path.Length - 1; i++)
-            path[i].speed = (path[i + 1].point.transform.position - path[i].point.transform.position) / path[i].moveTime;
-        path[^1].speed = (path[0].point.transform.position - path[^1].point.transform.position) / path[^1].moveTime;
+            path[i].speed = (path[i + 1].point.position - path[i].point.transform.position) / path[i].moveTime;
+        path[^1].speed = (path[0].point.position - path[^1].point.transform.position) / path[^1].moveTime;
         // dont forget to set the last point's speed
         remainingMoveTime = path[0].moveTime;
         remainingWaitTime = path[0].waitTime;
@@ -49,6 +50,7 @@ public class PlatformsController : MonoBehaviour
             remainingSinkInterval = sinkInterval;
             remainingSinkTime = 0;
         }
+        transform.position = path[position].point.position;
     }
 
     // Update is called once per frame
@@ -56,16 +58,21 @@ public class PlatformsController : MonoBehaviour
     {
         if (stopped)
             return;
-        if (remainingMoveTime>0)  // still moving
+        if (initialWaitTime>0)
+        {
+            initialWaitTime -= Time.deltaTime;
+            return;
+        }
+        if (remainingWaitTime > 0) // still waiting
+        {
+            remainingWaitTime -= Time.deltaTime;
+            remainingWaitTime = Mathf.Max(remainingWaitTime, 0);
+        }
+        if (remainingWaitTime == 0 && remainingMoveTime >0)  // still moving
         {
             remainingMoveTime -= Time.deltaTime;
             remainingMoveTime = Mathf.Max(remainingMoveTime, 0);
             transform.position += direction * Time.deltaTime * path[position].speed;
-        }
-        if (remainingMoveTime==0&&remainingWaitTime > 0) // still waiting
-        {
-            remainingWaitTime -= Time.deltaTime;
-            remainingWaitTime = Mathf.Max(remainingWaitTime, 0);
         }
         if (remainingWaitTime==0&& remainingMoveTime == 0)  // time to head off next point
         {
@@ -80,7 +87,7 @@ public class PlatformsController : MonoBehaviour
             else if (movementMethod == MovementMethod.repeating && position == path.Length)
             {
                 position = 0;
-                transform.position = path[0].point.transform.position;  // make it back to first point
+                transform.position = path[0].point.position;  // make it back to first point
             }
             else if (movementMethod == MovementMethod.stopping && position == path.Length)
             {
@@ -91,13 +98,13 @@ public class PlatformsController : MonoBehaviour
             // prevent funny stuffs from happening if dropping frames
             if (turned)
             {
-                transform.position = path[0].point.transform.position;
+                transform.position = path[0].point.position;
                 turned = false;
             }
             else if (movementMethod == MovementMethod.blancing && direction<0)
-                transform.position = path[position-direction].point.transform.position;   // when object is blancing back
+                transform.position = path[position-direction].point.position;   // when object is blancing back
             else
-                transform.position = path[position].point.transform.position;
+                transform.position = path[position].point.position;
             remainingMoveTime = path[position].moveTime;
             remainingWaitTime = path[position].waitTime;
         }
@@ -114,7 +121,7 @@ public class PlatformsController : MonoBehaviour
                 sink = true;
                 remainingSinkInterval = 0;
                 remainingSinkTime = sinkTime;
-                Color color = GetComponent<Renderer>().material.color;
+                Color color = GetComponent<Renderer>().material.color;   // sink code
                 color.a = 0;
                 GetComponent<Renderer>().material.color = color;
             }
@@ -137,7 +144,7 @@ public class PlatformsController : MonoBehaviour
         {
             if (path[i].point && path[i + 1].point)
             {
-                Gizmos.DrawLine(path[i].point.transform.position, path[i + 1].point.transform.position);
+                Gizmos.DrawLine(path[i].point.position, path[i + 1].point.position);
             }
         }
     }
