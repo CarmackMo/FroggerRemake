@@ -6,9 +6,11 @@ public class FrogController : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public float linearMovementSpeed = 3;
-    public Animator animator;
     public int totalHP = 0;
+    public float linearMovementSpeed = 3;
+    public float knockbackStrength = 1.0f;
+    public float knockbackTime = 0.2f;
+    public Animator animator;
     private Vector3 initPos;
     public enum MovementMethod
     {
@@ -164,7 +166,7 @@ public class FrogController : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         GameObject other = collision.gameObject;
-        if (other.tag.Equals("Enemy")|| other.tag.Equals("Obstacle") || other.tag.Equals("Lava"))
+        if (other.tag.Equals("Enemy") || other.tag.Equals("Lava"))
         {
             GameplayController.Instance.SetGameOver(false);
         }
@@ -243,31 +245,43 @@ public class FrogController : MonoBehaviour
                     triggerAutoForward = false;
                     autoForwardFacing = 0;
                 }
-                    
             }
         }
-        else if (other != null &&
-                 other.GetComponent<Obstacles>() != null)
+        else if (other.tag.Equals("Obstacle"))
         {
-            Obstacles obstacle = other.GetComponent<Obstacles>();
+            damage++;
+            GamePanel.Instance.UpdateHPText(damage, totalHP);
 
-            // If is a knock back obstacle, deal with knock back logic
-            if (obstacle.type == Generator.ObjectType.KnockBackObstacle)
+            if (totalHP - damage > 0)
             {
-                damage++;
-                GamePanel.Instance.UpdateHPText(damage, totalHP);
-
-                if (totalHP - damage > 0)
-                    transform.Translate(Vector3.down * obstacle.knockbackStrength);
-                else
-                    GameplayController.Instance.SetGameOver(false);
+                StartCoroutine(KnockbackCoroutine());
 
             }
-            // If is a non konck back obstacle, player die immediately
+
+                //transform.Translate(Vector3.down * knockbackStrength);
             else
-            {
                 GameplayController.Instance.SetGameOver(false);
-            }
         }
     }
+
+
+
+    IEnumerator KnockbackCoroutine()
+    {
+        float count = knockbackTime;
+        float speed = knockbackStrength / knockbackTime;
+
+        while (count > 0)
+        {
+            transform.Translate(new Vector3(0, -speed * Time.deltaTime, 0));
+            count -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield break;
+    }
+
+
+
 }
+

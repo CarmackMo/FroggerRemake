@@ -14070,10 +14070,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fba9f1cf48afa874ab5cc41d40850a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalHP: 8
   linearMovementSpeed: 3
+  knockbackStrength: 1
+  knockbackTime: 0.2
   animator: {fileID: 1545695420}
-  totalHP: 5
-  movementMethod: 2
+  movementMethod: 0
   initMovementMethod: 0
 --- !u!212 &1545695418
 SpriteRenderer:
