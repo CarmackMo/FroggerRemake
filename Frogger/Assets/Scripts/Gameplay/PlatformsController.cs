@@ -18,7 +18,7 @@ public class PlatformsController : MonoBehaviour
     public Path[] path;
     public enum MovementMethod 
     {
-        repeating, blancing, stopping
+        repeating, bouncing, stopping
     };
     public MovementMethod movementMethod;
     public int position = 0;  // the number of point the object currently at
@@ -77,7 +77,7 @@ public class PlatformsController : MonoBehaviour
         if (remainingWaitTime==0&& remainingMoveTime == 0)  // time to head off next point
         {
             position += direction;
-            if (movementMethod == MovementMethod.blancing &&
+            if (movementMethod == MovementMethod.bouncing &&
                 ((position == path.Length && direction == 1) || (position == -1 && direction == -1)))
             {
                 direction = -direction;  // change direction
@@ -101,7 +101,7 @@ public class PlatformsController : MonoBehaviour
                 transform.position = path[0].point.position;
                 turned = false;
             }
-            else if (movementMethod == MovementMethod.blancing && direction<0)
+            else if (movementMethod == MovementMethod.bouncing && direction<0)
                 transform.position = path[position-direction].point.position;   // when object is blancing back
             else
                 transform.position = path[position].point.position;
