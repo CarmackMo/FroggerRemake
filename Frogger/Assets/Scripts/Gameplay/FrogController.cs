@@ -87,6 +87,10 @@ public class FrogController : MonoBehaviour
         {
             offset += Vector3.up * linearMovementSpeed * Time.deltaTime * verticalInput;
             offset += Vector3.right * linearMovementSpeed * Time.deltaTime * horizontalInput;
+
+            animator.SetFloat("VerticalDirection", verticalInput);
+            animator.SetFloat("HorizontalDireciton", horizontalInput);
+
         }
         else if (movementMethod.Equals(MovementMethod.auto_forward))
         {
