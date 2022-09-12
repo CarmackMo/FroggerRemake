@@ -7,6 +7,7 @@ public class FrogController : MonoBehaviour
     // Start is called before the first frame update
 
     public float linearMovementSpeed = 3;
+    public Animator animator;
     public int totalHP = 0;
     private Vector3 initPos;
     public enum MovementMethod
@@ -55,7 +56,7 @@ public class FrogController : MonoBehaviour
                     animator.SetFloat("HorizontalDireciton", 1);
                     animator.SetTrigger("PlayerInput");
                 }
-                else
+                else if (horizontalInput < 0)
                 {
                     offset.x -= 1;
                     animator.SetFloat("HorizontalDireciton", -1);
@@ -71,7 +72,7 @@ public class FrogController : MonoBehaviour
                     animator.SetFloat("VerticalDirection", 1);
                     animator.SetTrigger("PlayerInput");
                 }
-                else
+                else if (verticalInput < 0)
                 {
                     offset.y -= 1;
                     animator.SetFloat("VerticalDirection", -1);
