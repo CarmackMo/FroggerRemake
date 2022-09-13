@@ -5,6 +5,11 @@ using UnityEngine;
 public class EndPointsController : MonoBehaviour
 {
     public bool achieved = false;
+
+    public GameObject squrrelImage;
+    public GameObject holeImage;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +24,8 @@ public class EndPointsController : MonoBehaviour
 
     public void arriveEndPoint()
     {
-        GetComponent<Renderer>().material.color = Color.green;  // change later
+        holeImage.SetActive(false);
+        squrrelImage.SetActive(true);
         achieved = true;
     }
 }

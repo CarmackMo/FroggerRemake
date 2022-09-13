@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameplayController : Singleton<GameplayController>
 {
     public bool gameOver = false;
     public float gameTime = 0f;
+    public enum GameState { PROTECT, PLAY, OVER, };
 
+    public GameState state = GameState.PROTECT;
     public FrogController frog;
 
-    private bool isGameStart = false;
     private int objectiveNum = 0;
     private int achieveNum = 0;
+
 
 
     private void Start()
@@ -26,7 +29,7 @@ public class GameplayController : Singleton<GameplayController>
 
     private void Update() 
     {
-        ProtectionState();
+        DetectGameState();
     }
 
 
@@ -37,7 +40,7 @@ public class GameplayController : Singleton<GameplayController>
     /// </summary>
     public void SetGameOver(bool status)
     {
-        gameOver = true;
+        state = GameState.OVER;
         Time.timeScale = 0;
         GamePanel.Instance.ShowGameResult(status);
     }
@@ -68,11 +71,11 @@ public class GameplayController : Singleton<GameplayController>
 
     }
 
-    public void ProtectionState()
+    public void DetectGameState()
     {
-        if (Input.anyKey == true && !isGameStart)
+        if (state == GameState.PROTECT && Input.anyKey == true)
         {
-            isGameStart = true;
+            state = GameState.PLAY;
             Time.timeScale = 1;
             GamePanel.Instance.HideProtectText();
             StartCoroutine(TimerCoroutrine());

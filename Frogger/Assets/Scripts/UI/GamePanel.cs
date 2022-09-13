@@ -9,6 +9,7 @@ public class GamePanel : Singleton<GamePanel>
     public TextMeshProUGUI HPText;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI protectText;
+    public TextMeshProUGUI restartText;
     public GameObject gameResult;
 
 
@@ -72,5 +73,11 @@ public class GamePanel : Singleton<GamePanel>
     public void HideProtectText()
     {
         protectText.gameObject.SetActive(false);
+    }
+
+
+    public void HideRestartText()
+    {
+        restartText.gameObject.SetActive(false);
     }
 }

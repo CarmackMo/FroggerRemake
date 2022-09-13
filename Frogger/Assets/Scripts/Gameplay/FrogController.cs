@@ -25,6 +25,13 @@ public class FrogController : MonoBehaviour
     private int damage = 0;
     private int autoForwardFacing=0;
 
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+
     void Start()
     {
         initPos = transform.position;
