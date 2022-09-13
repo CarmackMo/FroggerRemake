@@ -362,6 +362,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 122576031
+      objectReference: {fileID: 0}
     - target: {fileID: 1443015096773836176, guid: 970efd6399121d744953e7cdbce38393, type: 3}
       propertyPath: m_Name
       value: Platform1 (1)
@@ -13440,6 +13448,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 122576031
+      objectReference: {fileID: 0}
     - target: {fileID: 1443015096773836176, guid: 970efd6399121d744953e7cdbce38393, type: 3}
       propertyPath: m_Name
       value: SinkingPlatform
@@ -14138,6 +14154,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 122576031
+      objectReference: {fileID: 0}
     - target: {fileID: 1443015096773836176, guid: 970efd6399121d744953e7cdbce38393, type: 3}
       propertyPath: m_Name
       value: Platform1
@@ -14458,6 +14482,14 @@ PrefabInstance:
     - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1443015096611799600, guid: 970efd6399121d744953e7cdbce38393, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 122576031
       objectReference: {fileID: 0}
     - target: {fileID: 1443015096773836176, guid: 970efd6399121d744953e7cdbce38393, type: 3}
       propertyPath: m_Name
