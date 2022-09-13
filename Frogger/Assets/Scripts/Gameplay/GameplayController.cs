@@ -43,6 +43,7 @@ public class GameplayController : Singleton<GameplayController>
         state = GameState.OVER;
         Time.timeScale = 0;
         GamePanel.Instance.ShowGameResult(status);
+        GamePanel.Instance.ShowRestartText();
     }
 
 
@@ -80,6 +81,12 @@ public class GameplayController : Singleton<GameplayController>
             GamePanel.Instance.HideProtectText();
             StartCoroutine(TimerCoroutrine());
         }
+        if (state == GameState.OVER && Input.GetKeyDown(KeyCode.Return))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
+
+
 
 }

@@ -76,6 +76,11 @@ public class GamePanel : Singleton<GamePanel>
     }
 
 
+    public void ShowRestartText()
+    {
+        restartText.gameObject.SetActive(true);
+    }
+
     public void HideRestartText()
     {
         restartText.gameObject.SetActive(false);
