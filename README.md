@@ -8,4 +8,4 @@ The demo of this game can be play via follow link:
 
 [https://waterfriend.github.io/Arcade-Game-Team-8/](https://waterfriend.github.io/Arcade-Game-Team-8/)
 
-![Demo](Images/Demo3.gif)
+![Demo](Demo/Demo_img.jpg)
